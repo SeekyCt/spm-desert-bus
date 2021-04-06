@@ -291,8 +291,8 @@ void hpLossPatch()
 		{
 			// If mario is going to die, leave him on 1 hp
 			int curHp = spm::mario_pouch::pouchGetHp();
-			if ((curHp  + increase) < 1)
-				increase = curHp - 1;
+			if ((curHp + increase) < 1)
+				increase = 1 - curHp;
 			
 			// Do change
 			pouchAddHpReal(increase);

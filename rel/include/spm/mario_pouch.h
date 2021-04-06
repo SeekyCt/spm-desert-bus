@@ -33,7 +33,6 @@ struct MarioPouchWork
     u8 unknown_0x690[0x698 - 0x690];
     int enemiesDefeated;
     u8 unknown_0x69c[0x6a0 - 0x69c];
-    // unknown 0x69c-69f
 };
 
 static_assert(sizeof(MarioPouchWork) == 0x6a0);
