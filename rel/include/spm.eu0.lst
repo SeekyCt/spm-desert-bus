@@ -1,3 +1,12 @@
+/* OS Globals */
+
+800000e4:currentThread
+800030c8:firstRel
+800030cc:lastRel
+// more
+
+/* Dol */
+
 // Runtime.PPCEABI.H.a
 // __mem.c
 80004000:memcpy
@@ -8,18 +17,6 @@
 800294e0:mapDataPtr
 // data
 804031b8:mapDataList
-
-// NAND.a
-8029983c:NANDCreateAsync
-802999dc:NANDDeleteAsync
-80299bdc:NANDReadAsync
-80299cbc:NANDWriteAsync
-8029a73c:NANDSafeOpenAsync
-8029ac98:NANDSafeCloseAsync
-8029bbe4:NANDChangeDirAsync
-8029bdf8:NANDGetHomeDir
-8029c5b0:NANDCheckAsync
-// more
 
 // mobjdrv.c
 8002c8e8:mobjNameToPtrNoAssert
@@ -48,6 +45,10 @@
 8003ab80:windowDispGX2_Waku_col
 // more
 
+// camdrv.c
+80055b24:camGetPtr
+// more
+
 // dispdrv.c
 8005af04:dispEntry
 // more
@@ -65,9 +66,15 @@
 
 // itemdrv.c
 80078b3c:itemEntry
+8007bccc:itemTypeNameToId
+// more
 
 // item_data.c
 803f5f98:itemDataTable
+// more
+
+// item_event_data.c
+803fbc10:itemEventDataTable
 // more
 
 // evtmgr.c
@@ -89,7 +96,27 @@
 8050ce30:evt_debug_put_reg_str
 // more
 
+// evt_door.c
+800e2610:evt_door_set_door_descs
+800e3588:evt_door_set_dokan_descs
+800e4118:evt_door_set_map_door_descs
+// more
+
+// evt_fade.c
+800e7100:evt_fade_end_wait
+// more
+
+// evt_fairy.c
+800e8214:evt_fairy_flag_onoff
+// more
+
+// evt_guide.c
+800ea87c:evt_guide_flag2_onoff
+800ea984:evt_guide_check_flag0
+// more
+
 // evt_mario.c
+800ef4c0:evt_mario_flag8_onoff
 800ef650:evt_mario_key_off
 800ef62c:evt_mario_key_on
 800efa4c:evt_mario_get_pos
@@ -97,8 +124,12 @@
 // more
 
 // evt_mobj.c
+// text
 800f3608:evt_mobj_delete
 800f8be8:evt_mobj_blk
+// more
+// data
+8041b6d8:mobj_save_blk_sysevt
 // more
 
 // evt_msg.c
@@ -106,13 +137,21 @@
 800fbe74:evt_msg_continue
 // more
 
+// evt_npc.c
+8010a910:evt_npc_teleport_effect
+// more
+
 // evt_seq.c
+8010d028:evt_seq_set_seq
 8010d0a0:evt_seq_wait
+// more
 
 // mario.c
 80121f48:marioGetPtr
-80122b68:func_80122b68
-80122b7c:marioIsMovementDisabled
+80122b68:marioCtrlOffChk
+80122b7c:marioKeyOffChk
+80122bf4:marioKeyOff
+80122c2c:marioKeyOn
 8012b50c:marioSetGravity
 // more
 
@@ -126,10 +165,22 @@
 8014d468:pouchAddHp
 8014d4f8:pouchGetXp
 8014d508:pouchAddXp
+8014df4c:pouchRemoveItem
+8014eb68:pouchRemoveShopItem
+8014f31c:pouchGetCurPixl
+8014fa20:pouchCountUseItems
+8014fad0:pouchCountKeyItems
+8014fb78:pouchCountShopItems
+8014fc20:pouchCountChars
+8014fc70:pouchCountPixls
 // more
 
 // seq_logo.c
 80179140:seq_logoMain
+// more
+
+// seq_mapchange.c
+8017af98:_unload
 // more
 
 // seq_game.c
@@ -154,13 +205,27 @@
 80195f98:charPixlItemWinIsClosed
 // more
 
+// hud.c
+80199490:hudLoadStats
+80199ad0:hudHide
+// more
+
 // system.c
 8019d254:irand
 8019c54c:__assert2
 // more
 
+// debug.c
+8019e33c:OSPanic
+// more
+
+// filemgr.c
+8019f724:fileAllocf
+8019fa8c:fileFree
+8019fc5c:fileAsyncf
+// more
+
 // fontmgr.c
-8019ffb8:fontmgrInit
 801a0070:FontDrawStart
 801a0150:FontDrawStart_alpha
 801a0228:FontDrawEdge
@@ -175,27 +240,39 @@
 801a05dc:FontGetDrawColor
 801a05e4:FontDrawScale
 801a05fc:FontDrawCode
-801a0814:FontDrawCodeMtx
 801a09d4:FontDrawString
-801a0a18:FontDrawStringVecPitch
-801a0de0:FontDrawStringMtx
-801a11e0:FontDrawStringCenterMtx
 801a151c:FontDrawMessage
 801a1d50:FontDrawMessageMtx
-801a24d8:hankakuSearch
-801a24e0:kanjiSearch
-801a24e4:kanjiGetWidth
-801a255c:FontGetMessageWidthLine
 801a28ac:FontGetMessageWidth
-801a28b4:HSV2RGB
 // more
 
+// memory.c
+// text
+801a626c:__memAlloc
+801a62f0:__memFree
+801a6e34:__dl__FPv
+// data
+8042a408:size_table
+// sdata
+805ae168:memoryWp
+805ae16c:memorySwp
+
+// parse.c
+801a6e9c:parseInit
+801a6ebc:getTag
+801a6f40:parsePush
+801a70f4:parsePop
+801a710c:parsePopNext
+801a7140:parseGet1Next
+801a7488:parseTagGet1
+
 // romfont.c
-801a74f0:romFontGetMessage
-801a754c:romFontInit
-801a75b0:romFontMake
+// text
 801a773c:romFontPrintGX
 801a7c44:romFontGetWidth
+// more
+// sdata
+805ae170:romfontWp
 
 // spmario.c
 // text
@@ -213,13 +290,15 @@
 // 801a908c
 // sdata
 805ae178:gp
+// sbss
+805ae9c1:doShutdown
 
 // seqdef.c
 804287a8:seq_data
 
-// memory.c
-801a626c:__memAlloc
-801a62f0:__memFree
+// DEMOInit.c
+801a94c8:DEMOBeforeRender
+801a9590:DEMODoneRender
 // more
 
 // wpadmgr.c
@@ -229,7 +308,9 @@
 // more
 
 // spmario_snd.c
+80238598:spsndExit
 8023c93c:spsndBGMOn
+8023c948:spsndBGMOff_f_d
 // more
 
 // relmgr.c
@@ -237,20 +318,33 @@
 8023e434:relInit
 8023e444:loadRel
 8023e600:isRelLoaded
-// data
-805ae1a0:relHolder
+// sdata
+805ae1a0:relWp
 805ae1a4:relDecompName
 805ae1a8:relCompName
 
-// mtx.a
-// mtx.c
-8027a270:PSMTXIdentity
+// nandmgr.c
+8023e9ec:nandGetSaveFiles
+8023edcc:nandUpdateSave
+8023efe0:nandLoadSave
+// more
+
+// homebutton.c
+// text
+80241914:homebuttonMain
+// more
+// data
+805ae1b8:homebuttonWp
+
+// lz_embedded.c
+8036afc0:pitText
 // more
 
 // MSL_C.PPCEABI.bare.H.a
 // printf.c
 8025d098:sprintf
 // more
+
 // string.c
 8025a874:memmove
 8025e8fc:strcpy
@@ -265,18 +359,107 @@
 80270050:DCFlushRange
 802700d8:ICInvalidateRange
 // more
+// OSContext.c
+80270934:OSDumpContext
+// more
 // OSError.c
+// text
 80270c60:OSReport
+80270f78:__OSUnhandledException
 802729b8:OSFatal
+// more
+// rodata
+804ea600:exceptionMsg1
+804ea6ac:exceptionMsg2
+804ea710:exceptionMsg3
+// OSFont.c
+80273494:OSGetFontEncode
+80273868:OSLoadFont
+80273c48:OSGetFontTexel
 // more
 // OSInterrupt.c
 80273ed8:OSDisableInterrupts
 80273f00:OSRestoreInterrupts
+// OSReset.c
+80275fd4:OSShutdownSystem
+// more
+// OSThread.c
+80277ffc:OSSuspendThread
 // OSTime
 80278370:OSGetTime
+// more
+
+// mtx.a
+// mtx.c
+8027a270:PSMTXIdentity
+8027afac:C_MTXOrtho
+// more
+
+// dvd.a
+// dvdfs.c
+8027b910:DVDConvertPathToEntrynum
+// more
+// dvd_broadway.c
+805ae2d8:devDiStr
+// more
+
+// vi.a
+// vi.c
+802837a8:VIWaitForRetrace
+8028472c:VIFlush
+802848ac:VISetBlack
+// more
+
+// gx.a
+// GXTransform.c
+80294214:GXSetProjection
+// more
+
+// mem.a
+// mem_expHeap.c
+80295cb8:MEMGetAllocatableSizeForExpHeapEx
+80295d90:MEMGetSizeForMBlockExpHeap
+
+// ipc.a
+80298268:IOS_Open
+80298448:IOS_Close
+// more
+
+// NAND.a
+8029983c:NANDCreateAsync
+802999dc:NANDDeleteAsync
+80299bdc:NANDReadAsync
+80299cbc:NANDWriteAsync
+8029a73c:NANDSafeOpenAsync
+8029ac98:NANDSafeCloseAsync
+8029bbe4:NANDChangeDirAsync
+8029bdf8:NANDGetHomeDir
+8029c5b0:NANDCheckAsync
 // more
 
 // lzss10.c
 802e2598:lzss10GetDecompSize
 802e25d8:lzss10Decompress
 802e270c:lzss10ParseHeader
+
+/* Rel */
+
+// Sections:
+//   00000000 0 none
+//   80c458fc 1 .text 
+//   80ca9ad8 2 .ctors 
+//   80ca9adc 3 .dtors 
+//   80ca9ae8 4 .rodata 
+//   80cf5180 5 .data 
+//   80f64340 6 .bss 
+
+// machi.c
+52e4:evt_machi_set_elv_descs?1,1
+// more
+
+// dan.c
+// text
+3c5b4:evt_dan_read_data?1,1
+// more
+// bss
+1548:danWp?1,6
