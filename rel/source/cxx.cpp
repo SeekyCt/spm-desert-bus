@@ -1,33 +1,36 @@
+#include <common.h>
 #include <spm/memory.h>
 
-void *operator new(std::size_t size)
+using spm::memory::Heap;
+
+void * operator new(size_t size)
 {
-	return spm::memory::__memAlloc(0, size);
+    return spm::memory::__memAlloc(Heap::HEAP_MAIN, size);
 }
 
-void *operator new[](std::size_t size)
+void * operator new[](size_t size)
 {
-	return spm::memory::__memAlloc(0, size);
+    return spm::memory::__memAlloc(Heap::HEAP_MAIN, size);
 }
 
-void operator delete(void *ptr)
+void operator delete(void * ptr)
 {
-	return spm::memory::__memFree(0, ptr);
+    return spm::memory::__dl__FPv(ptr);
 }
 
-void operator delete[](void *ptr)
+void operator delete[](void * ptr)
 {
-	return spm::memory::__memFree(0, ptr);
+    return spm::memory::__dl__FPv(ptr);
 }
 
-void operator delete(void *ptr, std::size_t size)
+void operator delete(void * ptr, size_t size)
 {
-	(void) size;
-	return spm::memory::__memFree(0, ptr);
+    (void) size;
+    return spm::memory::__dl__FPv(ptr);
 }
 
-void operator delete[](void *ptr, std::size_t size)
+void operator delete[](void * ptr, size_t size)
 {
-	(void) size;
-	return spm::memory::__memFree(0, ptr);
+    (void) size;
+    return spm::memory::__dl__FPv(ptr);
 }

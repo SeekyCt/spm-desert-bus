@@ -1,14 +1,14 @@
 #include "patch.h"
 
-#include <types.h>
-#include <wii/OSCache.h>
+#include <common.h>
+#include <wii/os.h>
 
 namespace mod::patch {
 
 void clear_DC_IC_Cache(void * ptr, u32 size)
 {
-	wii::OSCache::DCFlushRange(ptr, size);
-	wii::OSCache::ICInvalidateRange(ptr, size);
+	wii::os::DCFlushRange(ptr, size);
+	wii::os::ICInvalidateRange(ptr, size);
 }
 
 void writeBranch(void * ptr, void * destination, bool link)

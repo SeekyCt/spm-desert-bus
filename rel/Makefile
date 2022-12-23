@@ -57,7 +57,8 @@ TARGET		:=	$(notdir $(CURDIR)).$(VERSION)
 BUILD		:=	build.$(VERSION)
 SOURCES		:=	source
 DATA		:=	data  
-INCLUDES	:=	include
+SPM_HEADERS :=  ../spm-headers
+INCLUDES	:=	include $(SPM_HEADERS)/include $(SPM_HEADERS)/mod
 
 #---------------------------------------------------------------------------------
 # options for code generation
@@ -66,7 +67,7 @@ INCLUDES	:=	include
 MACHDEP		= -mno-sdata -mgcn -DGEKKO -mcpu=750 -meabi -mhard-float
 
 CFLAGS		= -nostdlib -ffreestanding -ffunction-sections -fdata-sections -g -O3 -Wall $(MACHDEP) $(INCLUDE)
-CXXFLAGS	= -fno-exceptions -fno-rtti -std=gnu++17 $(CFLAGS)
+CXXFLAGS	= -fno-exceptions -fno-rtti -std=gnu++17 $(CFLAGS) -fmax-errors=1
 
 LDFLAGS		= -r -e _prolog -u _prolog -u _epilog -u _unresolved -Wl,--gc-sections -nostdlib -g $(MACHDEP) -Wl,-Map,$(notdir $@).map
 
@@ -155,7 +156,8 @@ export HFILES := $(addsuffix .h,$(subst .,_,$(BINFILES)))
 
 # For REL linking
 export LDFILES		:= $(foreach dir,$(SOURCES),$(notdir $(wildcard $(dir)/*.ld)))
-export MAPFILE		:= $(CURDIR)/include/spm.$(LST).lst
+# TODO: use SPM_HEADERS
+export MAPFILE		:= $(CURDIR)/../spm-headers/linker/spm.$(LST).lst
 
 #---------------------------------------------------------------------------------
 # build a list of include paths

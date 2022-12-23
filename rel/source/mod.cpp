@@ -2,7 +2,8 @@
 #include "mod.h"
 #include "patch.h"
 
-#include <types.h>
+#include <common.h>
+#include <spm/camdrv.h>
 #include <spm/dispdrv.h>
 #include <spm/evtmgr_cmd.h>
 #include <spm/evt_mario.h>
@@ -15,9 +16,9 @@
 #include <spm/seq_game.h>
 #include <spm/spmario.h>
 #include <spm/spmario_snd.h>
-#include <wii/OSError.h>
-#include <wii/string.h>
-#include <wii/types.h>
+#include <wii/gx.h>
+#include <wii/os.h>
+#include <msl/string.h>
 
 namespace mod {
 
@@ -36,7 +37,7 @@ static spm::seqdef::SeqFunc * seq_mapChangeMainReal;
 static void drawStr(const char * s, int y, int scale, bool rainbow, u8 alpha)
 {
 	// Set font code settings
-	wii::RGBA white {0xff, 0xff, 0xff, 0xff};
+	wii::gx::GXColor white {0xff, 0xff, 0xff, 0xff};
 	spm::fontmgr::FontDrawStart_alpha(alpha);
 	spm::fontmgr::FontDrawScale(scale);
 	spm::fontmgr::FontDrawColor(&white);
@@ -66,8 +67,8 @@ static void winScreenPatch()
 			if (wp->stage == STAGE_WIN_START)
 				spm::spmario_snd::spsndBGMOn(0, "BGM_EVT_STAFF1");
 
-			spm::dispdrv::dispEntry(spm::dispdrv::CAM_DEBUG_3D, 2, 0.0f, 
-				[](s8 cameraId, void * param)
+			spm::dispdrv::dispEntry(spm::camdrv::CAM_ID_DEBUG_3D, 2, 0.0f, 
+				[](s32 cameraId, void * param)
 				{
 					// Draw main message
 					drawStr("You win!", 100, 5, true, 0xff);
@@ -109,7 +110,7 @@ static void mapRedirectPatch()
 		[](s32 seq, const char * p1, const char * p2)
 		{
 			// If the seqSetSeq is a map change and not the opening cutscene, override it
-			if ((seq == spm::seqdrv::SEQ_MAPCHANGE) && (wii::string::strcmp(p1, "aa4_01") != 0))
+			if ((seq == spm::seqdrv::SEQ_MAPCHANGE) && (msl::string::strcmp(p1, "aa4_01") != 0))
 			{
 				if (firstLoad)
 				{
@@ -120,7 +121,7 @@ static void mapRedirectPatch()
 				else
 				{
 					// If they went in the wrong door, reset score
-					if (wii::string::strcmp(p1, "he3_03") == 0)
+					if (msl::string::strcmp(p1, "he3_03") == 0)
 						spm::mario_pouch::pouchAddXp(spm::mario_pouch::pouchGetXp() * -1);
 					else
 						// Otherwise increment by 1
@@ -170,7 +171,7 @@ void infoPatch()
 		[](spm::seqdrv::SeqWork * wp)
 		{
 			// The first time gameplay starts, display the tutorial text
-			if ((wii::string::strcmp(spm::spmario::gp->mapName, "he3_04") == 0) && !infoShown)
+			if ((msl::string::strcmp(spm::spmario::gp->mapName, "he3_04") == 0) && !infoShown)
 			{
 				infoShown = true;
 				spm::evtmgr::evtEntry(tutorial_evt, 0, 0);
@@ -221,10 +222,10 @@ static void messagePatch()
 	msgSearchReal = patch::hookFunction(spm::msgdrv::msgSearch,
 		[](const char * msgName)
 		{
-			if (wii::string::strcmp(msgName, "opening_000") == 0)
+			if (msl::string::strcmp(msgName, "opening_000") == 0)
 				// Override intro cutscene's text
 				return opening_000;
-			else if (wii::string::strcmp(msgName, "desert_bus") == 0)
+			else if (msl::string::strcmp(msgName, "desert_bus") == 0)
 				// Add custom tutorial message
 				return desert_bus;
 			else
@@ -312,7 +313,7 @@ void introMusicPatch()
 		[](u32 flags, const char * name)
 		{
 			// If the BGM is the intro music, replace it with fracktail's intro
-			if (wii::string::strcmp(name, "BGM_EVT_OPENING1") == 0)
+			if (msl::string::strcmp(name, "BGM_EVT_OPENING1") == 0)
 				name = "BGM_EVT_STG1_BOSS_APPEAR1";
 			
 			return spsndBGMOnReal(flags, name);
@@ -326,7 +327,7 @@ void introMusicPatch()
 
 void main()
 {
-	wii::OSError::OSReport("SPM Desert Bus v1.0: main running\n");
+	wii::os::OSReport("SPM Desert Bus v1.0: main running\n");
 
 	mapRedirectPatch();
 	winScreenPatch();
